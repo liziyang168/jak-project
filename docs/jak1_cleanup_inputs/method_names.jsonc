@@ -575,6 +575,10 @@
     "follow-update!",
     "Per-frame trail follower: rate-govern crawl speed/sample width, box-average, rubber-band correct, write the smoothed position."
   ],
+  "(method 21 yeti)": [
+    "aggro?",
+    "Is it safe to spawn a yeti-slave here? Is it far from other yetis and far from target?"
+  ],
   "(method 22 actor-link-info)": [
     "send-to-next-and-prev",
     "Send a 0-parameter message to the next and previous actor."
@@ -1051,6 +1055,10 @@
     "sync-on-state!",
     "match this platform's lit state and on-visual to the master's puzzle state, playing on/off sfx"
   ],
+  "(method 32 warrior)": [
+    "play-anim!",
+    "Determine animation to play and return it. If `really-play?` is true, actually update state, otherwise just\nget the animation name without side effects."
+  ],
   "(method 33 nav-control)": [
     "avoid-spheres-and-detect-blocked",
     "run avoid-spheres, then flag/fire blocked if travel shrinks"
@@ -1434,6 +1442,10 @@
     "actor-link-subtask-complete-hook",
     "Callback for checking to see if all actors in an actor list are complete. \nThis can be used as a callback for `apply-all` or similar.\nIt sets `ret` to `#t` if all actors are complete, otherwise it sets `ret` to `#f` and short circuits."
   ],
+  "add-gravity": [
+    "add-gravity",
+    "Apply gravity to the control frame transv."
+  ],
   "alt-actor-list-subtask-incomplete-count": [
     "alt-actor-list-subtask-incomplete-count",
     "Get the number of actors in this `alt-actor` list on this process which do not have the `complete` bit set\nin their permanent status."
@@ -1526,6 +1538,18 @@
     "baby-spider-default-event-handler",
     "Override of event handler that sends us to victory on `'victory`"
   ],
+  "birth-func-ocean-height": [
+    "birth-func-ocean-height",
+    "Set the particle's position to the ocean height at the spawn point, plus the user-float."
+  ],
+  "birth-func-y->userdata": [
+    "birth-func-y->userdata",
+    "On-birth callback that offsets the `user-float`'s height by the initial particle position."
+  ],
+  "build-conversions": [
+    "build-conversions",
+    "Prepare `control-info` for doing calculations in a local \"ctrl\" frame.\nFirst, compute the final surface (needed for flags/params)\nThen, compute the forward direction, control/world transforms, and `transv` in ctrl frame."
+  ],
   "can-grab-display?": [
     "can-grab-display?",
     "Can this process draw its hint text or similar to the screen?\nOnce it returns #t, it will become the exclusive process to draw to the screen for 0.1 seconds."
@@ -1566,6 +1590,22 @@
     "check-drop-level-assistant-bluehut",
     "Check if particle has dropped past the threshold stored in `user-float`. If so, chance to play splash,\nand draw a splash particle."
   ],
+  "check-drop-level-rain": [
+    "check-drop-level-rain",
+    "Kill drop particle when it hits the ground height and spawn splash particles."
+  ],
+  "check-water-level-above-and-die": [
+    "check-water-level-above-and-die",
+    "Kill particle if it goes above the water height stored in user-float."
+  ],
+  "check-water-level-drop": [
+    "check-water-level-drop",
+    "per-frame function to detect particles hitting the water height stored in user-float.\nKill particle and spawn a splash."
+  ],
+  "check-water-level-drop-and-die": [
+    "check-water-level-drop-and-die",
+    "Check if particle has hit water level stored in user-float and kill it."
+  ],
   "clear": [
     "clear",
     "Make string empty"
@@ -1581,6 +1621,18 @@
   "copyn-string<-charp": [
     "copyn-string<-charp",
     "Copy `len` characters from a C-string to a GOAL string, inserting a null character."
+  ],
+  "do-rotations1": [
+    "do-rotations1",
+    "Adjust the non-yaw component of our rotation to match `dir-targ`. The yaw component is adjusted later in\n`do-rotation2`."
+  ],
+  "do-rotations2": [
+    "do-rotations2",
+    "Adjust the yaw component of the rotation. This is second order - we have both `turnvv` and `turnv` limits."
+  ],
+  "draw-history": [
+    "draw-history",
+    "Draw debug history."
   ],
   "entity-actor-count": [
     "entity-actor-count",
@@ -1642,6 +1694,14 @@
     "level-hint-task-process",
     "If this entity's hint can be played, run its command array. This can mutate game state and check conditions.\nIf all conditions pass, return the text-id. Otherwise, return -1."
   ],
+  "level-setup": [
+    "level-setup",
+    "Update time in level and send 'level-enter events"
+  ],
+  "local-pad-angle": [
+    "local-pad-angle",
+    "Get the cosine of the angle between the control frame and the input angle from the user."
+  ],
   "matrix->quaternion": [
     "matrix->quaternion",
     "Convert rotation matrix to quaternion."
@@ -1701,6 +1761,10 @@
   "points-in-air?": [
     "points-in-air?",
     "Are both `p1` and `p2` inside any of the boxes?"
+  ],
+  "print-history": [
+    "print-history",
+    "Print target's collision history to `#t`."
   ],
   "quaterion<-rotate-y-vector": [
     "quaterion<-rotate-y-vector",
@@ -1882,6 +1946,14 @@
     "quaternion-zxy!",
     "Make a quaternion from a sequence of z, x, y axis rotations."
   ],
+  "read-pad": [
+    "read-pad",
+    "Read the pad direction and set `world-dir` to the world direction of the pad."
+  ],
+  "reverse-conversions": [
+    "reverse-conversions",
+    "Set global frame `transv` from the local frame version.\nIntended to be called after doing math in the control frame."
+  ],
   "set-eul!": [
     "set-eul!",
     "Set euler angles and a flag (as a float)."
@@ -1958,6 +2030,26 @@
     "string>?",
     "In dictionary order, is a > b?"
   ],
+  "target-compute-slopes": [
+    "target-compute-slopes",
+    "Compute the surface and local slopes"
+  ],
+  "target-move-dist": [
+    "target-move-dist",
+    "Return the average distance from the average position over the last `duration`. This increases if target\nis moving and is close to 0 when stuck."
+  ],
+  "target-print-stats": [
+    "target-print-stats",
+    "Print target stats to `dest`. Suitable for on-screen printing."
+  ],
+  "turn-around?": [
+    "turn-around?",
+    "Determine if target should do the 180 turn animation. Requirements are:\n- 1s since last `no-turn-around` surface flag\n- current and requested velocity in opposite directions\n- joystick more than 70%\n- 0.3 seconds since actor touch or low-contact\n- on surface\n- surface incline cosine > 0.7."
+  ],
+  "turn-to-vector": [
+    "turn-to-vector",
+    "Set up control for turning toward a specific direction."
+  ],
   "vector-3pt-cross!": [
     "vector-3pt-cross!",
     "Cross product of (2 - 1) and (3 - 1), giving a vector in the direction of the plane normal, but not\nmagnitude of 1."
@@ -1990,6 +2082,10 @@
     "vector-rotate-y!",
     "Rotate a vector along the y-axis, not very efficient."
   ],
+  "vector-turn-to": [
+    "vector-turn-to",
+    "Turn target to face a vector, immediately, and recompute control frame."
+  ],
   "vector-vector-deg-slerp!": [
     "vector-vector-deg-slerp!",
     "Spherical linear interpolation of coordinate frames produced by `(forward-up vec up)`."
@@ -2013,5 +2109,29 @@
   "vector-z-quaternion!": [
     "vector-z-quaternion!",
     "Get the third row of the rotation matrix for this quaternion - the direction of the z axis."
+  ],
+  "vector<-pad-in-surface!": [
+    "vector<-pad-in-surface!",
+    "Set `out` to the world-space direction target vector, handling both camera -> world transform and\nremoving components perpendicular to the surface plane."
+  ],
+  "warp-vector-into-surface!": [
+    "warp-vector-into-surface!",
+    "Set `out` to a vector parallel to the surface pointing in the direction of `dir`."
+  ],
+  "yakow-cam": [
+    "yakow-cam",
+    "Spawn the yakow camera."
+  ],
+  "yakow-default-event-handler": [
+    "yakow-default-event-handler",
+    "Customized event handler for yakows, handles player landing on yakow and attacks."
+  ],
+  "yakow-post": [
+    "yakow-post",
+    "Post for yakow that moves.\nThis sets rotation/speed state based on navigation output, calculating speeds needed for later animation.\nIt also detects water and if the yakows are in the pen."
+  ],
+  "yakow-task-complete?": [
+    "yakow-task-complete?",
+    "Set the current yakow's completion flag, return if all yakows are now in the pen.\nIf this is the first time we complete, run the yakow camera to show the player we're done."
   ]
 }

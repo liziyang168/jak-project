@@ -23,6 +23,8 @@
       ]
     }
   },
+  "(code enter voicebox)": {},
+  "(code exit voicebox)": {},
   "(code falling beach-rock)": {
     "vars": {
       "gp-2": [
@@ -67,6 +69,14 @@
       ]
     }
   },
+  "(code hit scarecrow-a)": {
+    "args": [
+      "angle",
+      "pos",
+      "arg2"
+    ]
+  },
+  "(code hit scarecrow-b)": {},
   "(code hud-collecting)": {
     "vars": {
       "v1-0": [
@@ -75,12 +85,21 @@
       ]
     }
   },
+  "(code ice-cube-appear ice-cube)": {},
+  "(code ice-cube-appear-land ice-cube)": {},
+  "(code ice-cube-trying-to-appear ice-cube)": {},
   "(code idle assistant-bluehut)": {},
   "(code idle assistant-firecanyon)": {},
   "(code idle assistant-lavatube-end)": {},
   "(code idle assistant-lavatube-start)": {},
   "(code idle assistant-levitator)": {},
   "(code idle assistant-villagec)": {},
+  "(code idle gambler)": {},
+  "(code idle scarecrow-a)": {},
+  "(code idle scarecrow-b)": {},
+  "(code idle training-cam)": {},
+  "(code idle village-cam)": {},
+  "(code idle voicebox)": {},
   "(code just-particles assistant-levitator)": {},
   "(code level-hint-ambient-sound level-hint)": {},
   "(code level-hint-error level-hint)": {},
@@ -106,13 +125,31 @@
       "s5-3": "run-start"
     }
   },
+  "(code nav-enemy-chase yeti-slave)": {
+    "vars": {
+      "f30-0": "speed"
+    }
+  },
   "(code nav-enemy-give-up aphid)": {
     "vars": {
       "s4-0": "root",
       "s5-0": "tgt-pos"
     }
   },
+  "(code nav-enemy-give-up yeti-slave)": {
+    "vars": {
+      "s4-0": "root",
+      "s5-0": "tgt-pos"
+    }
+  },
+  "(code nav-enemy-jump-land yeti-slave)": {},
+  "(code nav-enemy-patrol yeti-slave)": {},
   "(code nav-enemy-stare aphid)": {
+    "vars": {
+      "f30-0": "speed"
+    }
+  },
+  "(code nav-enemy-stare yeti-slave)": {
     "vars": {
       "f30-0": "speed"
     }
@@ -157,6 +194,8 @@
       ]
     }
   },
+  "(code pontoon-die pontoon)": {},
+  "(code pontoon-hidden pontoon)": {},
   "(code pov-camera-playing maincavecam)": {
     "vars": {
       "gp-1": [
@@ -173,6 +212,7 @@
       ]
     }
   },
+  "(code pov-camera-playing village2cam)": {},
   "(code race-ring-active)": {
     "vars": {
       "gp-2": [
@@ -195,6 +235,21 @@
         "gp-1",
         "handle"
       ]
+    }
+  },
+  "(code target-continue target)": {
+    "args": [
+      "cp"
+    ],
+    "vars": {
+      "a0-64": "lev",
+      "a1-18": "cmd",
+      "s5-0": "it",
+      "s5-2": "lev",
+      "s5-3": "sage",
+      "v1-124": "i",
+      "v1-20": "lev-info",
+      "v1-52": "lev-info"
     }
   },
   "(code target-death)": {
@@ -277,6 +332,9 @@
       ]
     }
   },
+  "(code target-flop-hit-ground target)": {},
+  "(code target-snowball target)": {},
+  "(code target-snowball-start target)": {},
   "(code target-title)": {
     "vars": {
       "gp-0": [
@@ -284,6 +342,13 @@
         "handle"
       ]
     }
+  },
+  "(code target-wheel target)": {},
+  "(code target-wheel-flip target)": {
+    "args": [
+      "height",
+      "arg1"
+    ]
   },
   "(code target-yellow-blast)": {
     "vars": {
@@ -293,6 +358,58 @@
       ]
     }
   },
+  "(code wall-plat-extended wall-plat)": {},
+  "(code wall-plat-extending wall-plat)": {
+    "vars": {
+      "gp-0": "pos"
+    }
+  },
+  "(code wall-plat-retracted wall-plat)": {},
+  "(code wall-plat-retracting wall-plat)": {
+    "vars": {
+      "gp-0": "pos"
+    }
+  },
+  "(code wall-plat-sync-idle wall-plat)": {
+    "vars": {
+      "f30-0": "phase"
+    }
+  },
+  "(code water-vol-idle water-anim)": {},
+  "(code water-vol-startup water-vol)": {},
+  "(code wedge-plat-idle wedge-plat)": {},
+  "(code wedge-plat-master-idle wedge-plat-master)": {},
+  "(code wedge-plat-outer-idle wedge-plat-outer)": {},
+  "(code wedge-plat-outer-tip wedge-plat-outer)": {},
+  "(code wedge-plat-tip wedge-plat)": {},
+  "(code yakow-graze yakow)": {},
+  "(code yakow-graze-kicked yakow)": {},
+  "(code yakow-idle yakow)": {
+    "vars": {
+      "f30-0": "anim-speed"
+    }
+  },
+  "(code yakow-notice yakow)": {},
+  "(code yeti-first-time-start yeti)": {},
+  "(code yeti-idle yeti)": {
+    "vars": {
+      "a0-0": "it",
+      "gp-0": "pos",
+      "s5-0": "fwd",
+      "v1-1": "num-children"
+    }
+  },
+  "(code yeti-resuming-start yeti)": {
+    "vars": {
+      "gp-0": "child-count",
+      "s4-0": "start-dir",
+      "s5-0": "start-pt",
+      "v1-0": "it"
+    }
+  },
+  "(code yeti-slave-appear-jump-up yeti-slave)": {},
+  "(code yeti-slave-appear-land yeti-slave)": {},
+  "(code yeti-slave-show-anims yeti-slave)": {},
   "(dummy-17 progress)": {
     "vars": {
       "v1-20": [
@@ -305,7 +422,27 @@
       ]
     }
   },
+  "(enter ice-cube-appear ice-cube)": {},
   "(enter idle assistant-lavatube-end)": {},
+  "(enter nav-enemy-idle ice-cube)": {},
+  "(enter pontoon-hidden pontoon)": {},
+  "(enter target-flop-hit-ground target)": {},
+  "(enter target-wheel target)": {},
+  "(enter target-wheel-flip target)": {},
+  "(enter wall-plat-extending wall-plat)": {},
+  "(enter wall-plat-retracting wall-plat)": {},
+  "(enter wall-plat-sync-idle wall-plat)": {},
+  "(enter yakow-graze yakow)": {},
+  "(enter yakow-idle yakow)": {},
+  "(enter yakow-notice yakow)": {},
+  "(enter yakow-run-away yakow)": {},
+  "(enter yakow-walk-to yakow)": {
+    "args": [
+      "dest"
+    ]
+  },
+  "(enter yeti-slave-appear-jump-up yeti-slave)": {},
+  "(event basebutton-up-idle warp-gate-switch)": {},
   "(event be-clone process-taskable)": {
     "vars": {
       "v0-0": [
@@ -322,6 +459,7 @@
       ]
     }
   },
+  "(event cam-robotboss camera-slave)": {},
   "(event citb-robotboss-idle)": {
     "vars": {
       "v0-3": [
@@ -338,12 +476,23 @@
       ]
     }
   },
+  "(event enter voicebox)": {},
   "(event idle process-taskable)": {
     "vars": {
       "v0-0": [
         "v0-0",
         "symbol"
       ]
+    }
+  },
+  "(event idle scarecrow-a)": {
+    "vars": {
+      "a0-24": "touching?",
+      "f30-0": "attack-angle",
+      "s3-0": "attack-id",
+      "s4-0": "task-ctrl",
+      "v1-14": "pd",
+      "v1-2": "remind"
     }
   },
   "(event level-hint-normal level-hint)": {},
@@ -380,6 +529,23 @@
       ]
     }
   },
+  "(event rigid-body-platform-float pontoon)": {},
+  "(event rigid-body-platform-idle pontoon)": {},
+  "(event target-flop-hit-ground target)": {},
+  "(event target-load-wait target)": {},
+  "(event target-snowball-start target)": {},
+  "(event target-wheel target)": {},
+  "(event wall-plat-extended wall-plat)": {},
+  "(event wall-plat-extending wall-plat)": {},
+  "(event wall-plat-retracted wall-plat)": {},
+  "(event wall-plat-retracting wall-plat)": {},
+  "(event wall-plat-sync-idle wall-plat)": {},
+  "(event water-vol-idle water-anim)": {},
+  "(event water-vol-idle water-vol)": {},
+  "(event wedge-plat-idle wedge-plat)": {},
+  "(event wedge-plat-outer-idle wedge-plat-outer)": {},
+  "(event wedge-plat-outer-tip wedge-plat-outer)": {},
+  "(event wedge-plat-tip wedge-plat)": {},
   "(exit idle assistant-levitator)": {},
   "(exit level-hint-ambient-sound level-hint)": {},
   "(exit level-hint-normal level-hint)": {},
@@ -398,6 +564,13 @@
       ]
     }
   },
+  "(exit play-anim warrior)": {},
+  "(exit pontoon-hidden pontoon)": {},
+  "(exit target-continue target)": {},
+  "(exit target-snowball-start target)": {},
+  "(exit target-wheel target)": {},
+  "(exit wall-plat-sync-idle wall-plat)": {},
+  "(exit water-vol-idle water-vol)": {},
   "(method 0 actor-link-info)": {
     "args": [
       "allocation",
@@ -888,6 +1061,20 @@
       "gp-0": "this"
     }
   },
+  "(method 0 water-control)": {
+    "args": [
+      "allocation",
+      "type-to-make",
+      "proc",
+      "joint-index",
+      "top-y-offset",
+      "swim-height",
+      "wade-height"
+    ],
+    "vars": {
+      "v0-0": "obj"
+    }
+  },
   "(method 1 thread)": {},
   "(method 10 __assert-info-private-struct)": {},
   "(method 10 actor-link-info)": {
@@ -1148,6 +1335,7 @@
       "v1-0": "period"
     }
   },
+  "(method 10 target)": {},
   "(method 10 texture-page)": {
     "args": [
       "this",
@@ -1216,9 +1404,19 @@
       "this"
     ],
     "vars": {
+      "f30-0": "height",
       "s5-0": "old-flag"
     }
   },
+  "(method 10 whirlpool)": {},
+  "(method 10 wobbler)": {
+    "args": [
+      "this",
+      "velx",
+      "vely"
+    ]
+  },
+  "(method 10 yeti-slave)": {},
   "(method 11 actor-link-info)": {},
   "(method 11 align-control)": {
     "args": [
@@ -1355,6 +1553,7 @@
       "f30-0": "eco-lev"
     }
   },
+  "(method 11 flying-lurker)": {},
   "(method 11 font-context)": {
     "args": [
       "this",
@@ -1400,6 +1599,7 @@
       ]
     }
   },
+  "(method 11 minertall)": {},
   "(method 11 nav-control)": {
     "args": [
       "this",
@@ -1409,6 +1609,7 @@
       "s5-1": "gap-info"
     }
   },
+  "(method 11 pontoon)": {},
   "(method 11 profile-bar)": {
     "args": [
       "this",
@@ -1436,6 +1637,8 @@
       "s1-0": "tag"
     }
   },
+  "(method 11 scarecrow-a)": {},
+  "(method 11 scarecrow-b)": {},
   "(method 11 sync-info)": {
     "vars": {
       "f0-1": "period-float",
@@ -1498,6 +1701,8 @@
       "v1-0": "prev"
     }
   },
+  "(method 11 tra-pontoon)": {},
+  "(method 11 training-cam)": {},
   "(method 11 trajectory)": {
     "args": [
       "this",
@@ -1532,7 +1737,55 @@
       "s5-1": "idx-1"
     }
   },
-  "(method 11 yeti)": {},
+  "(method 11 village-cam)": {},
+  "(method 11 wall-plat)": {},
+  "(method 11 warrior)": {},
+  "(method 11 water-vol)": {
+    "args": [
+      "this",
+      "ent"
+    ]
+  },
+  "(method 11 wedge-plat)": {
+    "args": [
+      "this",
+      "ent"
+    ],
+    "vars": {
+      "s3-0": "s0",
+      "s4-0": "root"
+    }
+  },
+  "(method 11 wedge-plat-master)": {
+    "args": [
+      "this",
+      "ent"
+    ]
+  },
+  "(method 11 wedge-plat-outer)": {},
+  "(method 11 whirlpool)": {
+    "args": [
+      "this",
+      "ent"
+    ],
+    "vars": {
+      "f28-0": "speed-delta",
+      "f30-0": "speed-idle",
+      "s3-0": "s0",
+      "s4-0": "root",
+      "s5-1": "chan",
+      "sv-16": "tag",
+      "v1-17": "lump-data"
+    }
+  },
+  "(method 11 wobbler)": {},
+  "(method 11 yakow)": {},
+  "(method 11 yeti)": {
+    "args": [
+      "this",
+      "ent"
+    ]
+  },
   "(method 12 actor-link-info)": {},
   "(method 12 align-control)": {},
   "(method 12 ambient-sound)": {
@@ -1778,6 +2031,7 @@
       "s5-1": "tangent-dir"
     }
   },
+  "(method 12 water-control)": {},
   "(method 12 wobbler)": {
     "args": [
       "this",
@@ -1990,6 +2244,15 @@
       "yaw",
       "vel",
       "frame-count"
+    ]
+  },
+  "(method 13 water-control)": {
+    "args": [
+      "this",
+      "arg0",
+      "pos",
+      "arg2",
+      "vel"
     ]
   },
   "(method 14 actor-link-info)": {},
@@ -2224,6 +2487,7 @@
       "s5-0": "to-center"
     }
   },
+  "(method 14 water-control)": {},
   "(method 15 actor-link-info)": {},
   "(method 15 bounding-box)": {},
   "(method 15 dead-pool)": {},
@@ -2569,6 +2833,7 @@
       "s5-0": "quat"
     }
   },
+  "(method 16 water-control)": {},
   "(method 17 actor-link-info)": {
     "args": [
       "this",
@@ -2833,6 +3098,7 @@
   },
   "(method 2 bfloat)": {},
   "(method 2 handle)": {},
+  "(method 2 joint)": {},
   "(method 2 process)": {},
   "(method 2 state)": {},
   "(method 2 thread)": {},
@@ -3241,7 +3507,9 @@
       "spin-speed"
     ],
     "vars": {
+      "a1-0": "particle-pos",
       "f0-7": "angle-to-center",
+      "f0-9": "volume",
       "f24-0": "new-angle",
       "f26-0": "pull-strength",
       "f28-0": "target-dist",
@@ -3491,6 +3759,7 @@
       "s4-1": "puff-pos-1"
     }
   },
+  "(method 21 snow-bumper)": {},
   "(method 21 steam-cap)": {
     "args": [
       "this"
@@ -3590,6 +3859,15 @@
       "s4-0": "sampler",
       "s4-1": "delta",
       "v1-0": "cur-pt"
+    }
+  },
+  "(method 21 yeti)": {
+    "args": [
+      "this",
+      "query-pt"
+    ],
+    "vars": {
+      "s5-0": "child"
     }
   },
   "(method 22 actor-link-info)": {
@@ -3909,6 +4187,7 @@
       "s5-1": "look"
     }
   },
+  "(method 22 water-vol)": {},
   "(method 23 actor-link-info)": {
     "args": [
       "this",
@@ -4230,6 +4509,7 @@
       "ptr"
     ]
   },
+  "(method 23 water-vol)": {},
   "(method 24 actor-link-info)": {
     "args": [
       "this",
@@ -4558,6 +4838,8 @@
       "pt"
     ]
   },
+  "(method 24 water-anim)": {},
+  "(method 24 water-vol)": {},
   "(method 25 actor-link-info)": {
     "vars": {
       "a0-2": "act",
@@ -4685,6 +4967,7 @@
       "f30-0": "new-u"
     }
   },
+  "(method 25 tra-iris-door)": {},
   "(method 25 trsqv)": {
     "vars": {
       "a1-2": "dir-grav",
@@ -4705,6 +4988,7 @@
       "v1-3": "trans-offset"
     }
   },
+  "(method 25 water-vol)": {},
   "(method 26 basebutton)": {
     "args": [
       "this"
@@ -4859,6 +5143,13 @@
       "s5-0": "channel",
       "s5-1": "channel",
       "v1-2": "task"
+    }
+  },
+  "(method 26 water-vol)": {
+    "vars": {
+      "s5-0": "tgt-water",
+      "v1-15": "tgt",
+      "v1-18": "attack"
     }
   },
   "(method 27 basebutton)": {
@@ -5135,6 +5426,11 @@
       "s5-0": "cshape"
     }
   },
+  "(method 27 water-vol)": {
+    "vars": {
+      "v1-7": "tgt"
+    }
+  },
   "(method 27 wedge-plat)": {
     "args": [
       "this"
@@ -5301,6 +5597,7 @@
       "f30-0": "dt"
     }
   },
+  "(method 28 water-anim)": {},
   "(method 29 basebutton)": {
     "args": [
       "this",
@@ -5367,6 +5664,13 @@
     ],
     "vars": {}
   },
+  "(method 29 village2cam)": {},
+  "(method 29 water-vol)": {
+    "vars": {
+      "sv-16": "tag",
+      "v1-8": "lump-data"
+    }
+  },
   "(method 3 DISP_LIST-bank)": {},
   "(method 3 __assert-info-private-struct)": {},
   "(method 3 actor-link-info)": {},
@@ -5432,7 +5736,11 @@
   "(method 3 bounding-box4w)": {},
   "(method 3 box8s)": {},
   "(method 3 box8s-array)": {},
+  "(method 3 camera-voicebox)": {},
   "(method 3 catch-frame)": {},
+  "(method 3 char-verts)": {},
+  "(method 3 citb-bunny)": {},
+  "(method 3 collide-history)": {},
   "(method 3 connectable)": {},
   "(method 3 cpu-thread)": {},
   "(method 3 curve)": {},
@@ -5444,16 +5752,25 @@
   "(method 3 dgo-entry)": {},
   "(method 3 dgo-file)": {},
   "(method 3 display-env)": {},
+  "(method 3 dma-foreground-sink)": {},
   "(method 3 double-lurker-top)": {},
   "(method 3 draw-control)": {},
   "(method 3 euler-angles)": {},
+  "(method 3 font-work)": {},
+  "(method 3 gambler)": {},
+  "(method 3 geologist)": {},
   "(method 3 handle)": {},
+  "(method 3 hopper)": {},
+  "(method 3 hud-icon)": {},
+  "(method 3 ice-cube)": {},
   "(method 3 inline-array-class)": {},
+  "(method 3 joint)": {},
   "(method 3 joint-anim)": {},
   "(method 3 joint-anim-compressed-control)": {},
   "(method 3 joint-anim-compressed-fixed)": {},
   "(method 3 joint-anim-compressed-frame)": {},
   "(method 3 joint-anim-compressed-hdr)": {},
+  "(method 3 joint-mod)": {},
   "(method 3 junglesnake-twist-joint)": {},
   "(method 3 kernel-context)": {},
   "(method 3 lavatube-part)": {},
@@ -5462,10 +5779,15 @@
   "(method 3 lod-group)": {},
   "(method 3 lod-set)": {},
   "(method 3 lowmemmap)": {},
+  "(method 3 maincavecam)": {},
   "(method 3 matrix)": {},
   "(method 3 matrix3)": {},
   "(method 3 matrix4h)": {},
+  "(method 3 minertall)": {},
+  "(method 3 nav-enemy-info)": {},
   "(method 3 plane)": {},
+  "(method 3 plunger-lurker)": {},
+  "(method 3 pontoon)": {},
   "(method 3 process)": {},
   "(method 3 process-tree)": {},
   "(method 3 protect-frame)": {},
@@ -5476,6 +5798,8 @@
     }
   },
   "(method 3 qword)": {},
+  "(method 3 racer-info)": {},
+  "(method 3 ramdisk-rpc-fill)": {},
   "(method 3 random-generator)": {},
   "(method 3 res-lump)": {
     "vars": {
@@ -5483,15 +5807,30 @@
     }
   },
   "(method 3 rgbaf)": {},
+  "(method 3 robocave-part)": {},
+  "(method 3 scarecrow-a)": {},
+  "(method 3 scarecrow-b)": {},
   "(method 3 skeleton-group)": {},
+  "(method 3 snow-ball-shadow)": {},
+  "(method 3 snow-bumper)": {},
+  "(method 3 snowball-bank)": {},
+  "(method 3 snowball-info)": {},
   "(method 3 sphere)": {},
+  "(method 3 static-screen)": {},
+  "(method 3 sunkenfisha)": {},
+  "(method 3 swamp-rat)": {},
   "(method 3 thread)": {},
   "(method 3 tippy)": {},
+  "(method 3 tra-iris-door)": {},
+  "(method 3 tra-pontoon)": {},
+  "(method 3 training-cam)": {},
+  "(method 3 training-water)": {},
   "(method 3 transform)": {},
   "(method 3 transformq)": {},
   "(method 3 trs)": {},
   "(method 3 trsq)": {},
   "(method 3 trsqv)": {},
+  "(method 3 tube-info)": {},
   "(method 3 vec4s)": {},
   "(method 3 vector)": {},
   "(method 3 vector-array)": {},
@@ -5514,7 +5853,25 @@
   "(method 3 vertical-planes)": {},
   "(method 3 vertical-planes-array)": {},
   "(method 3 vif-disasm-element)": {},
+  "(method 3 village2cam)": {},
+  "(method 3 villagea-part)": {},
+  "(method 3 wall-plat)": {},
+  "(method 3 warpgate)": {},
+  "(method 3 warrior)": {},
+  "(method 3 water-anim)": {},
+  "(method 3 water-control)": {},
+  "(method 3 water-vol)": {},
+  "(method 3 water-vol-deadly)": {},
+  "(method 3 wedge-plat)": {},
+  "(method 3 wedge-plat-master)": {},
+  "(method 3 wedge-plat-outer)": {},
+  "(method 3 whirlpool)": {},
+  "(method 3 wind-vector)": {},
+  "(method 3 wind-work)": {},
   "(method 3 wobbler)": {},
+  "(method 3 yakow)": {},
+  "(method 3 yakow-bank)": {},
+  "(method 3 yeti)": {},
   "(method 3 yeti-slave)": {},
   "(method 30 balloonlurker)": {
     "args": [
@@ -5718,6 +6075,7 @@
       "v1-50": "stabs"
     }
   },
+  "(method 31 minertall)": {},
   "(method 31 ogre-plat)": {
     "args": [
       "this"
@@ -5815,6 +6173,7 @@
       "v1-8": "cp1"
     }
   },
+  "(method 31 warrior)": {},
   "(method 32 assistant)": {
     "args": [
       "this",
@@ -5860,6 +6219,7 @@
       "really-play?"
     ]
   },
+  "(method 32 minertall)": {},
   "(method 32 nav-control)": {
     "args": [
       "this",
@@ -5906,6 +6266,12 @@
         "handle"
       ]
     }
+  },
+  "(method 32 warrior)": {
+    "args": [
+      "this",
+      "really-play?"
+    ]
   },
   "(method 33 nav-control)": {
     "args": [
@@ -5996,6 +6362,7 @@
   "(method 39 assistant-villagec)": {},
   "(method 39 babak-with-cannon)": {},
   "(method 39 baby-spider)": {},
+  "(method 39 hopper)": {},
   "(method 4 array)": {},
   "(method 4 bit-array)": {},
   "(method 4 inline-array-class)": {},
@@ -6052,6 +6419,7 @@
       "f1-3": "speed-step"
     }
   },
+  "(method 41 warrior)": {},
   "(method 43 aphid)": {
     "args": [
       "this",
@@ -6294,6 +6662,11 @@
       "s5-0": "csm"
     }
   },
+  "(method 47 yeti-slave)": {
+    "vars": {
+      "s5-0": "root"
+    }
+  },
   "(method 48 aphid)": {},
   "(method 48 assistant)": {
     "vars": {
@@ -6335,6 +6708,7 @@
       "v1-5": "parent"
     }
   },
+  "(method 48 minertall)": {},
   "(method 48 progress)": {
     "args": [
       "this",
@@ -6350,11 +6724,14 @@
       "v1-23": "jmod"
     }
   },
+  "(method 48 warrior)": {},
+  "(method 48 yeti-slave)": {},
   "(method 5 array)": {},
   "(method 5 bit-array)": {},
   "(method 5 cpu-thread)": {},
   "(method 5 dead-pool-heap)": {},
   "(method 5 inline-array-class)": {},
+  "(method 5 merc-fragment)": {},
   "(method 5 pair)": {},
   "(method 5 process)": {},
   "(method 5 string)": {},
@@ -6843,6 +7220,7 @@
     }
   },
   "(method 59 babak)": {},
+  "(method 60 citb-bunny)": {},
   "(method 60 ice-cube)": {
     "args": [
       "this",
@@ -6865,7 +7243,12 @@
       "v1-0": "i"
     }
   },
+  "(method 7 hud)": {},
   "(method 7 object)": {},
+  "(method 7 process)": {},
+  "(method 7 static-screen)": {},
+  "(method 7 training-cam)": {},
+  "(method 7 yeti-slave)": {},
   "(method 76 snow-bunny)": {
     "args": [
       "this",
@@ -7194,6 +7577,7 @@
       "damping"
     ]
   },
+  "(method 9 path-control)": {},
   "(method 9 process)": {},
   "(method 9 res-lump)": {
     "args": [
@@ -7376,6 +7760,15 @@
       "v1-1": "joint-idx"
     }
   },
+  "(method 9 water-control)": {},
+  "(method 9 wobbler)": {
+    "args": [
+      "this",
+      "spring",
+      "damping",
+      "height"
+    ]
+  },
   "(method play-anim! minershort)": {
     "args": [
       "this",
@@ -7411,6 +7804,10 @@
       ]
     }
   },
+  "(post target-snowball target)": {},
+  "(post yakow-walk-to yakow)": {},
+  "(trans cam-voicebox camera-voicebox)": {},
+  "(trans enter voicebox)": {},
   "(trans fisher-done)": {
     "vars": {
       "v1-13": [
@@ -7423,10 +7820,37 @@
   "(trans hidden assistant-lavatube-end)": {},
   "(trans hidden assistant-lavatube-start)": {},
   "(trans hidden assistant-levitator)": {},
+  "(trans ice-cube-appear ice-cube)": {},
   "(trans idle assistant-bluehut)": {},
   "(trans idle assistant-levitator)": {},
+  "(trans idle minertall)": {},
+  "(trans idle scarecrow-a)": {},
+  "(trans mother-spider-leg-flying mother-spider-leg)": {},
   "(trans play-anim assistant-bluehut)": {},
   "(trans play-anim assistant-levitator)": {},
+  "(trans pontoon-hidden pontoon)": {},
+  "(trans target-flop-hit-ground target)": {},
+  "(trans target-warp-in target)": {},
+  "(trans water-vol-idle water-anim)": {},
+  "(trans water-vol-idle water-vol)": {},
+  "(trans whirlpool-idle whirlpool)": {
+    "vars": {
+      "a1-0": "part-pos",
+      "f0-9": "volume",
+      "f30-0": "rotate-delta"
+    }
+  },
+  "(trans yakow-idle yakow)": {},
+  "(trans yakow-run-away yakow)": {},
+  "(trans yakow-walk-to yakow)": {},
+  "(trans yeti-slave-appear-jump-up yeti-slave)": {
+    "vars": {
+      "a0-2": "num-bones",
+      "gp-0": "bone-pos",
+      "s5-0": "bones"
+    }
+  },
+  "(trans yeti-slave-show-anims yeti-slave)": {},
   "*": {
     "args": [
       "x",
@@ -7644,6 +8068,17 @@
       ]
     }
   },
+  "add-gravity": {
+    "vars": {
+      "f0-4": "new-along-mag",
+      "f1-0": "orig-along-mag",
+      "f30-0": "grav-dot",
+      "gp-0": "grav-acc-c",
+      "gp-1": "vel-along-grav",
+      "s5-0": "grav-acc-w",
+      "s5-1": "grav-n-ctrl"
+    }
+  },
   "add-reg-gif-packet": {
     "args": [
       "packet",
@@ -7652,6 +8087,23 @@
     ],
     "vars": {
       "v1-0": "tag"
+    }
+  },
+  "add-thrust": {
+    "vars": {
+      "a1-2": "grav-dir-flat",
+      "f0-11": "xz-vel",
+      "f30-0": "off-edge-target-vel",
+      "f30-1": "downslope-angle",
+      "gp-0": "current-vel-ctrl",
+      "gp-1": "debug-pt",
+      "s1-0": "grav-dir-flat-ctrl",
+      "s1-1": "lc-edge-nrm-ctrl",
+      "s2-1": "low-coverage-edge-normal",
+      "s3-1": "grav-transv-nrm",
+      "s4-0": "target-transv-orig",
+      "s5-0": "target-transv",
+      "v1-31": "target-transv-xz-dir"
     }
   },
   "adgif-shader-login": {
@@ -8053,6 +8505,26 @@
       ]
     }
   },
+  "bend-gravity": {
+    "vars": {
+      "f0-2": "bend-target"
+    }
+  },
+  "bird-bob-func": {},
+  "birth-func-ocean-height": {
+    "args": [
+      "ss",
+      "info",
+      "particle"
+    ]
+  },
+  "birth-func-y->userdata": {
+    "args": [
+      "ss",
+      "info",
+      "height-offset"
+    ]
+  },
   "blackout": {
     "vars": {
       "gp-0": "sprite-dma-data",
@@ -8111,6 +8583,15 @@
         "next-node",
         "bsp-node"
       ]
+    }
+  },
+  "build-conversions": {
+    "args": [
+      "dir"
+    ],
+    "vars": {
+      "s5-0": "fwd",
+      "v0-7": "gnorm"
     }
   },
   "buzz-stop!": {
@@ -8184,6 +8665,7 @@
       ]
     }
   },
+  "cam-master-effect": {},
   "can-grab-display?": {
     "args": [
       "proc"
@@ -8283,6 +8765,18 @@
       "gp-0": "splash-pos"
     }
   },
+  "check-drop-level-rain": {
+    "args": [
+      "ss",
+      "info",
+      "pos"
+    ],
+    "vars": {
+      "gp-0": "splash-loc"
+    }
+  },
+  "check-drop-level-village1-fountain": {},
+  "check-drop-level-village1-fountain-nosplash": {},
   "check-irx-version": {
     "vars": {
       "gp-0": [
@@ -8290,6 +8784,24 @@
         "sound-rpc-get-irx-version"
       ]
     }
+  },
+  "check-water-level-above-and-die": {},
+  "check-water-level-drop": {
+    "args": [
+      "ss",
+      "info",
+      "part"
+    ],
+    "vars": {
+      "s5-0": "spash-pos"
+    }
+  },
+  "check-water-level-drop-and-die": {
+    "args": [
+      "ss",
+      "info",
+      "part"
+    ]
   },
   "circle-circle-xz-intersect": {},
   "circle-test": {},
@@ -8306,6 +8818,7 @@
       "s"
     ]
   },
+  "clear-tr-stat": {},
   "closest-pt-in-triangle": {},
   "cloud-track": {
     "vars": {
@@ -8318,6 +8831,13 @@
         "handle"
       ]
     }
+  },
+  "collide-shape-moving-angle-set!": {
+    "args": [
+      "shape",
+      "normal",
+      "incoming"
+    ]
   },
   "column-scale-matrix!": {
     "args": [
@@ -8936,6 +9456,18 @@
       "sync"
     ]
   },
+  "do-rotations1": {},
+  "do-rotations2": {
+    "vars": {
+      "f0-2": "angle-diff",
+      "f1-2": "turn-acc",
+      "gp-0": "dir-targ-fwd",
+      "s3-0": "up",
+      "s3-1": "slerp-targ",
+      "s4-0": "slerp-current",
+      "s5-0": "desired-dir-targ"
+    }
+  },
   "draw-bones": {
     "vars": {
       "a2-6": [
@@ -8986,6 +9518,20 @@
       "x",
       "y"
     ]
+  },
+  "draw-history": {
+    "args": [
+      "ctrl"
+    ],
+    "vars": {
+      "s1-0": "prev2",
+      "s2-0": "next",
+      "s3-0": "end",
+      "s4-0": "i",
+      "s5-0": "mask",
+      "v1-15": "mode",
+      "v1-19": "prev1"
+    }
   },
   "draw-npc-shadow": {
     "args": [
@@ -9183,6 +9729,24 @@
     }
   },
   "finish-background": {},
+  "flag-setup": {
+    "vars": {
+      "f0-14": "trans-no-vert-len",
+      "f0-17": "ascend-vel",
+      "f0-8": "transv-along-gravity",
+      "f0-9": "orig-xz-vel",
+      "f1-4": "new-xz-vel",
+      "f1-5": "no-vert-decay",
+      "f2-0": "y-scale",
+      "f2-2": "adjusted-trans-vert",
+      "f30-0": "trans-vert",
+      "gp-0": "transv-perp-grav",
+      "gp-1": "trans",
+      "s5-0": "trans-no-vert",
+      "v1-146": "lev",
+      "v1-25": "trans"
+    }
+  },
   "flatten-joint-control-to-spr": {
     "vars": {
       "a1-0": [
@@ -9320,6 +9884,8 @@
       "lev-idx"
     ]
   },
+  "get-next-slot-down": {},
+  "get-next-slot-up": {},
   "get-next-task-down": {
     "args": [
       "cur-task-idx",
@@ -9408,6 +9974,14 @@
       "proc",
       "ent"
     ]
+  },
+  "init-target": {
+    "args": [
+      "cp"
+    ],
+    "vars": {
+      "s5-0": "ctrl"
+    }
   },
   "initialize-anim-tester": {},
   "initialize-collision": {
@@ -9520,6 +10094,8 @@
       "mat"
     ]
   },
+  "joint-points": {},
+  "keg-bounce-set-particle-rotation-callback": {},
   "kernel-check-hardwired-addresses": {},
   "kernel-copy-function": {},
   "kernel-copy-to-kernel-ram": {},
@@ -9670,6 +10246,11 @@
       ]
     }
   },
+  "level-setup": {
+    "vars": {
+      "gp-0": "current-lev"
+    }
+  },
   "level-update-after-load": {
     "args": [
       "loaded-level",
@@ -9727,6 +10308,11 @@
       "package",
       "allocation"
     ]
+  },
+  "local-pad-angle": {
+    "vars": {
+      "a0-1": "dir-w"
+    }
   },
   "log2": {
     "args": [
@@ -10288,6 +10874,7 @@
       "y"
     ]
   },
+  "miners-anim-loop": {},
   "mistycam-spawn": {
     "vars": {
       "s5-2": [
@@ -10357,6 +10944,14 @@
       "v0-0": "lookup-entity"
     }
   },
+  "next-level": {
+    "args": [
+      "lev-name"
+    ],
+    "vars": {
+      "v1-0": "info"
+    }
+  },
   "nmember": {
     "args": [
       "this",
@@ -10382,6 +10977,8 @@
       "f1-2": "after-inc"
     }
   },
+  "part-water-splash-callback": {},
+  "plane-volume-intersect-dist": {},
   "play-anim!": {
     "args": [
       "this",
@@ -10491,6 +11088,12 @@
       "v1-0": "i"
     }
   },
+  "poly-find-nearest-edge": {
+    "vars": {
+      "sv-36": "best-dist"
+    }
+  },
+  "post-flag-setup": {},
   "previous-brother": {
     "args": [
       "proc"
@@ -10521,6 +11124,16 @@
       "font-ctxt",
       "alpha"
     ]
+  },
+  "print-history": {
+    "args": [
+      "ctrl"
+    ],
+    "vars": {
+      "s3-0": "flag",
+      "s4-0": "hist",
+      "s5-0": "i"
+    }
   },
   "print-tr-stat": {
     "args": [
@@ -10948,6 +11561,9 @@
       "rots"
     ]
   },
+  "racer-on-ground?": {},
+  "racer-service-slide": {},
+  "racer-xz": {},
   "ramdisk-load": {
     "args": [
       "file-id",
@@ -11022,6 +11638,11 @@
       "radius"
     ]
   },
+  "read-pad": {
+    "args": [
+      "world-dir"
+    ]
+  },
   "recursive-inside-poly": {
     "vars": {
       "a1-2": [
@@ -11080,9 +11701,19 @@
       "v1-0": "hoff"
     }
   },
+  "reset-target-state": {
+    "args": [
+      "reset-vel-and-rot"
+    ]
+  },
   "return-from-exception": {},
   "return-from-thread": {},
   "return-from-thread-dead": {},
+  "reverse-conversions": {
+    "args": [
+      "transv"
+    ]
+  },
   "run-function-in-process": {},
   "scale-matrix!": {
     "args": [
@@ -11503,6 +12134,9 @@
       ]
     }
   },
+  "sparticle-seagull-moon": {},
+  "sparticle-track-sun": {},
+  "splash-spawn": {},
   "sprite-add-2d-all": {
     "args": [
       "sprites",
@@ -11733,6 +12367,15 @@
       "num-sprites"
     ]
   },
+  "start": {
+    "args": [
+      "stop-mode",
+      "cp"
+    ],
+    "vars": {
+      "v1-3": "target-proc"
+    }
+  },
   "start-perf-stat-collection": {
     "vars": {
       "a0-2": "which-stat",
@@ -11740,6 +12383,11 @@
       "v1-2": "frame-idx",
       "v1-5": "bucket"
     }
+  },
+  "stop": {
+    "args": [
+      "mode"
+    ]
   },
   "store-image": {
     "args": [
@@ -12002,19 +12650,180 @@
       "src1"
     ]
   },
-  "target-collision-reaction": {
+  "target-calc-camera-pos": {
     "vars": {
-      "sv-104": "react-flags",
-      "sv-96": "moving-flags"
+      "gp-0": "cpos",
+      "v1-11": "waterflags"
     }
   },
+  "target-collision-low-coverage": {
+    "args": [
+      "ctrl",
+      "isect",
+      "support",
+      "rect-flag-ptr",
+      "move-flag-ptr",
+      "wall-detect-ptr"
+    ],
+    "vars": {
+      "sv-16": "support2",
+      "sv-160": "edge-normal-xz",
+      "sv-164": "tri",
+      "sv-20": "react-flag-out",
+      "sv-208": "probe-1-pt",
+      "sv-212": "probe-1-dir",
+      "sv-24": "move-flag-out",
+      "sv-272": "probe-2-pt",
+      "sv-276": "probe-2-dir",
+      "sv-28": "wall-detect-out",
+      "sv-32": "react-flag",
+      "sv-40": "move-flag",
+      "sv-48": "wall-detect",
+      "sv-52": "edge-normal",
+      "sv-56": "edge-dir"
+    }
+  },
+  "target-collision-no-reaction": {
+    "args": [
+      "ctrl",
+      "isect",
+      "out-vel",
+      "in-vel"
+    ],
+    "vars": {
+      "s5-0": "history"
+    }
+  },
+  "target-collision-reaction": {
+    "args": [
+      "ctrl",
+      "isect",
+      "out-vel",
+      "in-vel"
+    ],
+    "vars": {
+      "a0-1": "i",
+      "a1-3": "move-to-isect",
+      "f28-0": "fall-rate",
+      "f30-0": "descent-scale",
+      "s3-1": "horiz-vel",
+      "s3-4": "seam",
+      "sv-104": "react-flags",
+      "sv-160": "wall-detect?",
+      "sv-80": "support",
+      "sv-84": "support2",
+      "sv-88": "vel",
+      "sv-96": "moving-flags",
+      "v1-23": "prim-center"
+    }
+  },
+  "target-compute-edge": {
+    "vars": {
+      "a1-6": "target-pt",
+      "gp-1": "fwd",
+      "s4-1": "hand-err",
+      "s5-0": "egrab-info"
+    }
+  },
+  "target-compute-edge-rider": {
+    "vars": {
+      "a1-7": "delta-center",
+      "gp-0": "grab-info"
+    }
+  },
+  "target-compute-pole": {
+    "vars": {
+      "gp-0": "dir",
+      "s4-0": "pole"
+    }
+  },
+  "target-compute-slopes": {
+    "args": [
+      "up-w"
+    ],
+    "vars": {
+      "a1-0": "fwd-w",
+      "gp-0": "probe",
+      "s5-0": "mat"
+    }
+  },
+  "target-falling-anim": {
+    "vars": {
+      "v1-2": "current-ja",
+      "v1-8": "current-ja"
+    }
+  },
+  "target-falling-anim-trans": {},
+  "target-falling-trans": {},
   "target-land-effect": {},
+  "target-move-dist": {
+    "args": [
+      "duration"
+    ],
+    "vars": {
+      "a1-6": "hist",
+      "f30-0": "dist-sum",
+      "gp-0": "hist-count",
+      "s4-0": "i",
+      "s5-0": "avg-pos",
+      "v1-0": "remaining",
+      "v1-9": "hist"
+    }
+  },
+  "target-no-ja-move-post": {
+    "vars": {
+      "a1-2": "oop"
+    }
+  },
+  "target-no-move-post": {},
+  "target-no-stick-post": {
+    "vars": {
+      "gp-0": "iterations",
+      "s4-0": "pad-dir",
+      "s5-0": "i"
+    }
+  },
+  "target-post": {},
   "target-powerup-effect": {
     "vars": {
       "a0-74": [
         "a0-74",
         "vector"
       ]
+    }
+  },
+  "target-print-stats": {
+    "args": [
+      "tgt",
+      "dest"
+    ]
+  },
+  "target-racing-post": {},
+  "target-real-post": {
+    "vars": {
+      "a1-2": "pad-dir",
+      "a2-1": "force-dir",
+      "f0-12": "force-turn-blend",
+      "f30-0": "turn-mag",
+      "gp-0": "iterations",
+      "s4-0": "turn-dir",
+      "s5-0": "i"
+    }
+  },
+  "target-slide-down-post": {
+    "vars": {
+      "gp-0": "iterations",
+      "s3-1": "pad-dir",
+      "s4-1": "slide-down-dir",
+      "s5-0": "i"
+    }
+  },
+  "target-snowball-post": {},
+  "target-swim-post": {
+    "vars": {
+      "gp-0": "iterations",
+      "s4-0": "turn-dir",
+      "s5-0": "i"
     }
   },
   "texscroll-execute": {
@@ -12226,6 +13035,35 @@
       "x"
     ]
   },
+  "turn-around?": {
+    "vars": {
+      "a0-1": "dir-targ",
+      "a0-3": "max-xz-vel-idx",
+      "a1-3": "hist",
+      "a2-0": "i",
+      "a2-6": "i",
+      "a3-2": "prev",
+      "f0-1": "vel-dot",
+      "f1-0": "xz-vel-sum",
+      "f1-1": "avg-vel",
+      "f2-0": "max-xz-vel",
+      "gp-0": "dir-targ-n",
+      "v1-6": "last-no-turn-time"
+    }
+  },
+  "turn-to-vector": {
+    "args": [
+      "dir-in",
+      "mag"
+    ],
+    "vars": {
+      "f0-6": "angle",
+      "f0-8": "speed",
+      "gp-0": "dir",
+      "gp-1": "debug-pt",
+      "v1-15": "i"
+    }
+  },
   "type-type?": {
     "args": [
       "child-type",
@@ -12397,6 +13235,25 @@
       ]
     }
   },
+  "update-rain": {
+    "args": [
+      "tgt"
+    ],
+    "vars": {
+      "a2-0": "xz-vel",
+      "gp-0": "spawn-pos",
+      "s5-0": "mat"
+    }
+  },
+  "update-snow": {
+    "args": [
+      "tgt"
+    ],
+    "vars": {
+      "f0-0": "vel-scale",
+      "gp-0": "pos"
+    }
+  },
   "update-sound-banks": {
     "vars": {
       "t0-0": [
@@ -12427,6 +13284,16 @@
       "t1-0": "dest-block",
       "t2-0": "sz",
       "v1-2": "modified-chunk-count"
+    }
+  },
+  "update-wind": {
+    "args": [
+      "work",
+      "table"
+    ],
+    "vars": {
+      "f0-5": "force",
+      "s4-0": "idx"
     }
   },
   "upload-vis-bits": {
@@ -12772,6 +13639,15 @@
     }
   },
   "vector-segment-distance-point!": {},
+  "vector-turn-to": {
+    "args": [
+      "turn-target"
+    ],
+    "vars": {
+      "s5-0": "dir-targ",
+      "v1-1": "normalized"
+    }
+  },
   "vector-v*float!": {
     "args": [
       "delta-p",
@@ -12899,6 +13775,17 @@
       "alpha"
     ]
   },
+  "vector<-pad-in-surface!": {
+    "args": [
+      "out",
+      "scaled"
+    ],
+    "vars": {
+      "a1-1": "pad-dir-w"
+    }
+  },
+  "voicebox-init-by-other": {},
+  "voicebox-spawn": {},
   "voicebox-track": {
     "vars": {
       "a0-1": "target"
@@ -12920,5 +13807,112 @@
       ]
     }
   },
-  "yeti-slave-init-by-other": {}
+  "warp-vector-into-surface!": {
+    "args": [
+      "out",
+      "nrm",
+      "dir"
+    ],
+    "vars": {
+      "a2-2": "mat"
+    }
+  },
+  "water-vol-init-by-other": {
+    "args": [
+      "ent"
+    ]
+  },
+  "wind-get-hashed-index": {},
+  "yakow-blend-walk-run": {
+    "vars": {
+      "f0-26": "anim-speed",
+      "f1-5": "walk-spped",
+      "f2-1": "run-speed",
+      "f30-0": "speed",
+      "gp-0": "last-non-idle-time"
+    }
+  },
+  "yakow-cam": {},
+  "yakow-common-post": {},
+  "yakow-default-event-handler": {
+    "args": [
+      "sender",
+      "arg1",
+      "msg",
+      "block"
+    ],
+    "vars": {
+      "v1-2": "incoming-proc-drw",
+      "v1-9": "id"
+    }
+  },
+  "yakow-facing-direction?": {
+    "args": [
+      "dir",
+      "angle-tolerance"
+    ],
+    "vars": {
+      "s4-0": "heading-dir",
+      "s5-0": "normalized-dir"
+    }
+  },
+  "yakow-facing-player?": {
+    "args": [
+      "angle-tol"
+    ]
+  },
+  "yakow-facing-point?": {
+    "args": [
+      "pt",
+      "angle-tol"
+    ],
+    "vars": {
+      "v1-1": "point-dir"
+    }
+  },
+  "yakow-generate-travel-vector": {
+    "vars": {
+      "f30-0": "original-vel",
+      "gp-1": "flee-target-dir",
+      "s5-1": "heading"
+    }
+  },
+  "yakow-post": {
+    "vars": {
+      "f30-0": "turn-magnitude",
+      "gp-0": "new-heading",
+      "gp-2": "old-pos",
+      "s5-0": "old-heading",
+      "v1-16": "turn-axis",
+      "v1-24": "transv"
+    }
+  },
+  "yakow-run-post": {},
+  "yakow-simple-post": {},
+  "yakow-task-complete?": {
+    "args": [
+      "set-complete?"
+    ],
+    "vars": {
+      "gp-0": "incomplete?",
+      "sv-16": "all-done?"
+    }
+  },
+  "yeti-slave-default-event-handler": {
+    "args": [
+      "proc",
+      "argc",
+      "msg",
+      "block"
+    ]
+  },
+  "yeti-slave-init-by-other": {
+    "args": [
+      "ent",
+      "master",
+      "initial-pos",
+      "fwd",
+      "start-idle?"
+    ]
+  }
 }
