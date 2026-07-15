@@ -10,6 +10,8 @@ void SimpleThreadGroup::run(const std::function<void(int)>& func, int num_runs) 
 void SimpleThreadGroup::run(const std::function<void(int)>& func, int num_runs, int num_workers) {
   ASSERT(m_joined);
 
+  num_workers = std::min(num_workers, (int)std::thread::hardware_concurrency());
+
   // copy the function, in case the user gives us a temporary function.
   m_func = func;
 
