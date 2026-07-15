@@ -1,7 +1,6 @@
 #include "extract_level.h"
 
 #include <set>
-#include <thread>
 
 #include "extract_anim.h"
 

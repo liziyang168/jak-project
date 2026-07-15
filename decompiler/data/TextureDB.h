@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <mutex>
 #include <optional>
 #include <set>
 #include <string>
@@ -26,10 +27,18 @@ struct TextureLRUCache {
   size_t capacity;
   List entries;  // front = most recently used
   std::unordered_map<u32, Iterator> lookup;
+  std::mutex mutex;
 
   TextureLRUCache(size_t capacity) : capacity(capacity) {}
 
+  void clear() {
+    std::lock_guard lock(mutex);
+    entries.clear();
+    lookup.clear();
+  }
+
   ResolvedTextureData* get(u32 id) {
+    std::lock_guard lock(mutex);
     auto it = lookup.find(id);
     if (it == lookup.end()) {
       return nullptr;
@@ -39,6 +48,7 @@ struct TextureLRUCache {
   }
 
   void put(u32 id, ResolvedTextureData data) {
+    std::lock_guard lock(mutex);
     auto it = lookup.find(id);
     if (it != lookup.end()) {
       it->second->second = std::move(data);

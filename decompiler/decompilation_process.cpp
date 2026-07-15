@@ -358,8 +358,7 @@ std::unique_ptr<TextureDB> handle_textures(Config config,
     tex_db->merge_textures(texture_merge_path);
   }
 
-  auto replacements_path = file_util::get_jak_project_dir() / "custom_assets" /
-                           game_version_names[config.game_version] / "texture_replacements";
+  auto replacements_path = "E:\\awful_texture_pack\\"; // DONT MERGE
   if (fs::exists(replacements_path)) {
     tex_db->replace_textures(replacements_path);
   }

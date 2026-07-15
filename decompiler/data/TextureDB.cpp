@@ -9,7 +9,7 @@
 
 namespace decompiler {
 
-TextureDB::TextureDB() : replacement_cache(TextureLRUCache(25)) {
+TextureDB::TextureDB() : replacement_cache(TextureLRUCache(50)) {
   std::vector<u32> data(16 * 16, 0xffffffff);
   add_texture(kPlaceholderWhiteTexturePage, kPlaceholderWhiteTextureId, data, 16, 16,
               "placeholder-white", "placeholder", {}, 1, 0);
