@@ -193,6 +193,16 @@ struct Config {
   std::unordered_map<std::string, std::vector<std::string>> import_deps_by_file;
 
   bool rip_collision = false;
+
+  // Returns whether or not with the current configuration, all we are doing is extracting the
+  // levels this is so the decompiler can try to skip steps that are unnecessary for that.
+  bool only_extracting_levels() const {
+    if (levels_extract && !disassemble_code && !!dump_function_metadata && !decompile_code &&
+        !write_scripts && !disassemble_data) {
+      return true;
+    }
+    return false;
+  }
 };
 
 Config read_config_file(const fs::path& path_to_config_file,

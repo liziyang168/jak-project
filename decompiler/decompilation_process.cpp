@@ -14,23 +14,19 @@
 #include "data/streamed_audio.h"
 #include "level_extractor/extract_level.h"
 
-int run_decompilation_process(decompiler::Config config,
-                              const fs::path& in_folder,
-                              const fs::path& out_folder,
-                              const bool minimal_for_extractor) {
-  using namespace decompiler;
-  Timer decomp_timer;
+using namespace decompiler;
 
-  lg::info("[Mem] Top of main: {} MB\n", get_peak_rss() / (1024 * 1024));
+#define RETURN_IF_ERROR(expr)      \
+  if (auto err = (expr); err != 0) \
+    return err;
 
-  init_opcode_info();
-
-  lg::info("[Mem] After init: {} MB\n", get_peak_rss() / (1024 * 1024));
-
+std::unique_ptr<ObjectFileDB> setup_db(decompiler::Config config,
+                                       const fs::path& in_folder,
+                                       const fs::path& out_folder,
+                                       bool minimal_for_extractor) {
   std::vector<fs::path> dgos, objs, strs, tex_strs, art_strs;
   if (minimal_for_extractor) {
-    // TODO - does this even matter, or can we just make the DGOs lazily loaded (does it already
-    // happen?)
+    // TODO - does this even matter, or can we just make the DGOs lazily loaded
     for (const auto& dgo_name : config.dgo_names) {
       std::string common_name = "GAME.CGO";
       if (dgo_name.length() > 3 && dgo_name.substr(dgo_name.length() - 3) == "DGO") {
@@ -49,8 +45,7 @@ int run_decompilation_process(decompiler::Config config,
   }
 
   if (minimal_for_extractor) {
-    // TODO - does this even matter, or can we just make the DGOs lazily loaded (does it already
-    // happen?)
+    // TODO - does this even matter, or can we just make the DGOs lazily loaded
     for (const auto& obj_name : config.object_file_names) {
       if (obj_name.length() > 3 && obj_name.substr(obj_name.length() - 3) == "TXT") {
         // ends in TXT
@@ -77,63 +72,97 @@ int run_decompilation_process(decompiler::Config config,
     art_strs.push_back(in_folder / str_name);
   }
 
-  lg::info("[Mem] After config read: {} MB", get_peak_rss() / (1024 * 1024));
+  lg::info("[Mem] After load_dgos: {} MB", get_peak_rss() / (1024 * 1024));
 
-  // build file database
   lg::info("Setting up object file DB...");
-  ObjectFileDB db(dgos, fs::path(config.obj_file_name_map_file), objs, strs, tex_strs, art_strs,
-                  config);
+
+  auto db = std::make_unique<ObjectFileDB>(dgos, fs::path(config.obj_file_name_map_file), objs,
+                                           strs, tex_strs, art_strs, config);
 
   // Explicitly fail if a file in the 'allowed_objects' list wasn't found in the DB
   // as this is another silent error that can be confusing
   if (!config.allowed_objects.empty()) {
     for (const auto& expected_obj : config.allowed_objects) {
-      if (db.obj_files_by_name.count(expected_obj) == 0) {
+      if (db->obj_files_by_name.count(expected_obj) == 0) {
         // TODO - this is wrong for jak1, fix eventually as this is now done in 3 places
         lg::error(
             "Expected to find '{}' in the ObjectFileDB but did not. Check "
             "./decompiler/config/{}/inputs.jsonc",
             expected_obj, config.game_name);
-        return 1;
+        return nullptr;
       }
     }
   }
 
-  lg::info("[Mem] After DB setup: {} MB", get_peak_rss() / (1024 * 1024));
-
   // write out DGO file info
   file_util::create_dir_if_needed(out_folder);
-  file_util::write_text_file(out_folder / "dgo.txt", db.generate_dgo_listing());
+  file_util::write_text_file(out_folder / "dgo.txt", db->generate_dgo_listing());
   // write out object file map (used for future decompilations, if desired)
   file_util::write_text_file(out_folder / "obj.txt",
-                             db.generate_obj_listing(config.merged_objects));
+                             db->generate_obj_listing(config.merged_objects));
 
-  // dump raw objs
+  return db;
+}
+
+void dump_raw_objs(Config config,
+                   const fs::path& in_folder,
+                   const fs::path& out_folder,
+                   ObjectFileDB& db) {
   if (config.dump_objs) {
+    lg::info("Dumping raw objects...");
     auto path = out_folder / "raw_obj";
     file_util::create_dir_if_needed(path);
     db.dump_raw_objects(path);
   }
+}
 
+void process_data_and_code(Config config,
+                           const fs::path& in_folder,
+                           const fs::path& out_folder,
+                           ObjectFileDB& db) {
   // process files (required for all analysis)
-  db.process_link_data(config);
+  lg::info("Processing link data");
+  db.process_link_data(config);  // can not skip this
   lg::info("[Mem] After link data: {} MB", get_peak_rss() / (1024 * 1024));
-  db.find_code(config);
-  db.process_labels();
-  lg::info("[Mem] After code: {} MB", get_peak_rss() / (1024 * 1024));
 
-  // top level decompile (do this before printing asm so we get function names)
-  if (config.find_functions) {
-    db.ir2_top_level_pass(config);
+  if (config.only_extracting_levels()) {
+    lg::warn(
+        "Based on config flags, skipping code processing steps as we are only interested in "
+        "extracting levels");
+  } else {
+    lg::info("Finding code");
+    db.find_code(config);
+    lg::info("Processing labels");
+    db.process_labels();
   }
 
-  // print disassembly
+  // top level decompile (do this before printing asm so we get function names)
+  if (config.disassemble_code || config.disassemble_data || config.decompile_code ||
+      config.generate_all_types) {
+    if (config.find_functions) {
+      lg::info("Doing a pass of top-level functions");
+      db.ir2_top_level_pass(config);
+    }
+  }
+}
+
+void print_disassembly(Config config,
+                       const fs::path& in_folder,
+                       const fs::path& out_folder,
+                       ObjectFileDB& db) {
   if (config.disassemble_code || config.disassemble_data) {
+    lg::info("Printing disassembly");
     db.write_disassembly(out_folder, config.disassemble_data, config.disassemble_code,
                          config.write_hex_near_instructions, config.dump_function_metadata);
   }
+}
 
+int process_art_groups(Config config,
+                       const fs::path& in_folder,
+                       const fs::path& out_folder,
+                       ObjectFileDB& db) {
   if (config.process_art_groups) {
+    lg::info("Processing art groups");
     db.extract_art_info();
     // dump art info to json if requested
     if (config.dump_art_group_info) {
@@ -164,33 +193,57 @@ int run_decompilation_process(decompiler::Config config,
     lg::error("`process_art_groups` was false and no art-group-info dump was provided!");
     return 1;
   }
+  return 0;
+}
 
+void init_dts(Config config,
+              const fs::path& in_folder,
+              const fs::path& out_folder,
+              ObjectFileDB& db) {
   if (config.process_part_group_table && !config.part_group_table.empty()) {
+    lg::info("Using provided part_group_table");
     db.dts.part_group_table = config.part_group_table;
   }
 
   if (config.process_tpages && !config.texture_info_dump.empty()) {
+    lg::info("Using provided texture_info_dump");
     db.dts.textures = config.texture_info_dump;
   }
+}
 
-  // main decompile.
+void decompile_code(Config config,
+                    const fs::path& in_folder,
+                    const fs::path& out_folder,
+                    ObjectFileDB& db) {
   if (config.decompile_code) {
+    lg::info("Analyzing functions");
     db.analyze_functions_ir2(out_folder, config, {}, {}, {});
   }
+}
 
+void generate_all_types(Config config,
+                        const fs::path& in_folder,
+                        const fs::path& out_folder,
+                        ObjectFileDB& db) {
   if (config.generate_all_types) {
+    lg::info("Generating all types");
     ASSERT_MSG(config.decompile_code, "Must decompile code to generate all-types");
     db.ir2_analyze_all_types(out_folder / "_new-all-types.gc", config.old_all_types_file,
                              config.hacks.types_with_bad_inspect_methods);
   }
+}
 
-  lg::info("[Mem] After decomp: {} MB", get_peak_rss() / (1024 * 1024));
-
+void dump_outputs(Config config,
+                  const fs::path& in_folder,
+                  const fs::path& out_folder,
+                  ObjectFileDB& db) {
   // write out all symbols
+  lg::info("[DUMP] Dumping all symbols");
   file_util::write_text_file(out_folder / "all-syms.gc", db.dts.dump_symbol_types());
 
   // write art groups
   if (config.process_art_groups) {
+    lg::info("[DUMP] Dumping art info");
     db.dump_art_info(out_folder);
   }
 
@@ -205,18 +258,26 @@ int run_decompilation_process(decompiler::Config config,
   }
 
   if (config.hexdump_code || config.hexdump_data) {
+    lg::info("[DUMP] Dumping object file words");
     db.write_object_file_words(out_folder, config.hexdump_data, config.hexdump_code);
   }
 
   // data stuff
   if (config.write_scripts) {
+    lg::info("[DUMP] Dumping scripts");
     db.find_and_write_scripts(out_folder);
   }
+}
 
+void write_text_assets(Config config,
+                       const fs::path& in_folder,
+                       const fs::path& out_folder,
+                       ObjectFileDB& db) {
   // ensure asset dir exists
   file_util::create_dir_if_needed(out_folder / "assets");
 
   if (config.process_game_text) {
+    lg::info("Processing game text");
     auto result = db.process_game_text_files(config);
     if (!result.empty()) {
       file_util::write_text_file(out_folder / "assets" / "game_text.txt", result);
@@ -233,6 +294,7 @@ int run_decompilation_process(decompiler::Config config,
   lg::info("[Mem] After text: {} MB", get_peak_rss() / (1024 * 1024));
 
   if (config.process_subtitle_text || config.process_subtitle_images) {
+    lg::info("Processing subtitle text");
     if (config.game_version == GameVersion::JakX) {
       lg::warn(
           "- Jak X does not use spools, ignoring process_subtitle_text and/or "
@@ -247,27 +309,33 @@ int run_decompilation_process(decompiler::Config config,
   }
 
   lg::info("[Mem] After spool handling: {} MB", get_peak_rss() / (1024 * 1024));
+}
 
-  TextureDB tex_db;
+std::unique_ptr<TextureDB> handle_textures(Config config,
+                                           const fs::path& in_folder,
+                                           const fs::path& out_folder,
+                                           ObjectFileDB& db) {
+  auto tex_db = std::make_unique<TextureDB>();
   if (config.dump_tex_info && (!config.process_tpages && config.levels_extract)) {
     lg::error(
         "[DUMP] 'dump_tex_info' set without also setting 'process_tpages' or 'levels_extract'");
-    return 1;
+    return nullptr;
   }
   if (config.process_tpages || config.levels_extract) {
+    lg::info("Processing texture pages");
     auto textures_out = out_folder / "textures";
     auto dump_out = out_folder / "import";
     file_util::create_dir_if_needed(textures_out);
-    auto result = db.process_tpages(tex_db, textures_out, config, dump_out);
+    auto result = db.process_tpages(*tex_db, textures_out, config, dump_out);
     if (!result.empty() && config.process_tpages) {
       file_util::write_text_file(textures_out / "tpage-dir.txt", result);
       file_util::write_text_file(textures_out / "tex-remap.txt",
-                                 tex_db.generate_texture_dest_adjustment_table());
+                                 tex_db->generate_texture_dest_adjustment_table());
     }
     if (config.dump_tex_info) {
       if (!config.write_tpage_imports) {
         lg::error("[DUMP] 'dump_tex_info' set without setting 'write_tpage_imports'");
-        return 1;
+        return nullptr;
       }
       auto texture_file_name = out_folder / "dump" / "tex-info.min.json";
       nlohmann::json texture_json = db.dts.textures;
@@ -277,43 +345,125 @@ int run_decompilation_process(decompiler::Config config,
     }
   }
 
-  lg::info("[Mem] After textures: {} MB", get_peak_rss() / (1024 * 1024));
-
   // Merge textures before replacing them, in other words, replacements take priority
   auto texture_merge_path = file_util::get_jak_project_dir() / "game" / "assets" /
                             game_version_names[config.game_version] / "texture_merges";
   if (fs::exists(texture_merge_path)) {
-    tex_db.merge_textures(texture_merge_path);
+    tex_db->merge_textures(texture_merge_path);
   }
 
   auto replacements_path = file_util::get_jak_project_dir() / "custom_assets" /
                            game_version_names[config.game_version] / "texture_replacements";
   if (fs::exists(replacements_path)) {
-    tex_db.replace_textures(replacements_path);
+    tex_db->replace_textures(replacements_path);
   }
 
+  return tex_db;
+}
+
+void process_game_count(Config config,
+                        const fs::path& in_folder,
+                        const fs::path& out_folder,
+                        ObjectFileDB& db) {
   if (config.process_game_count) {
+    lg::info("Processing game count");
     auto result = db.process_game_count_file();
     if (!result.empty()) {
       file_util::write_text_file(out_folder / "assets" / "game_count.txt", result);
     }
   }
+}
 
+void extract_levels(Config config,
+                    const fs::path& in_folder,
+                    const fs::path& out_folder,
+                    ObjectFileDB& db,
+                    TextureDB& tex_db) {
   if (config.levels_extract) {
+    lg::info("Extracting levels");
     auto level_out_path =
         file_util::get_jak_project_dir() / "out" / game_version_names[config.game_version] / "fr3";
     file_util::create_dir_if_needed(level_out_path);
     extract_all_levels(db, tex_db, config.levels_to_extract, "GAME.CGO", config, level_out_path);
   }
+}
 
-  lg::info("[Mem] After extraction: {} MB", get_peak_rss() / (1024 * 1024));
-
+void rip_audio(Config config,
+               const fs::path& in_folder,
+               const fs::path& out_folder,
+               ObjectFileDB& db) {
   if (config.rip_streamed_audio) {
+    lg::info("Ripping audio");
     auto streaming_audio_out = out_folder / "audio";
     file_util::create_dir_if_needed(streaming_audio_out);
     process_streamed_audio(config, streaming_audio_out, in_folder,
                            config.streamed_audio_file_names);
   }
+}
+
+int run_decompilation_process(decompiler::Config config,
+                              const fs::path& in_folder,
+                              const fs::path& out_folder,
+                              bool minimal_for_extractor) {
+  using namespace decompiler;
+  Timer decomp_timer;
+
+  lg::info("[Mem] Start of decompilation: {} MB\n", get_peak_rss() / (1024 * 1024));
+
+  init_opcode_info();
+
+  lg::info("[Mem] After init: {} MB\n", get_peak_rss() / (1024 * 1024));
+
+  // build file database
+  const auto db_ptr = setup_db(config, in_folder, out_folder, minimal_for_extractor);
+  if (!db_ptr) {
+    lg::error("Unable to setup ObjectFileDB!");
+    return 1;
+  }
+  ObjectFileDB& db = *db_ptr.get();
+
+  lg::info("[Mem] After setup_db: {} MB", get_peak_rss() / (1024 * 1024));
+
+  dump_raw_objs(config, in_folder, out_folder, db);
+
+  lg::info("[Mem] After dump_raw_objs: {} MB", get_peak_rss() / (1024 * 1024));
+
+  process_data_and_code(config, in_folder, out_folder, db);
+
+  lg::info("[Mem] After process_data_and_code: {} MB", get_peak_rss() / (1024 * 1024));
+
+  print_disassembly(config, in_folder, out_folder, db);
+
+  RETURN_IF_ERROR(process_art_groups(config, in_folder, out_folder, db));
+
+  init_dts(config, in_folder, out_folder, db);
+
+  decompile_code(config, in_folder, out_folder, db);
+
+  generate_all_types(config, in_folder, out_folder, db);
+
+  lg::info("[Mem] After decomp: {} MB", get_peak_rss() / (1024 * 1024));
+
+  dump_outputs(config, in_folder, out_folder, db);
+
+  write_text_assets(config, in_folder, out_folder, db);
+
+  auto tex_db_ptr = handle_textures(config, in_folder, out_folder, db);
+  if (!tex_db_ptr) {
+    lg::error("Unable to setup TextureDB!");
+    return 1;
+  }
+  TextureDB& tex_db = *tex_db_ptr.get();
+
+  lg::info("[Mem] After textures: {} MB", get_peak_rss() / (1024 * 1024));
+
+  process_game_count(config, in_folder, out_folder, db);
+
+  extract_levels(config, in_folder, out_folder, db, tex_db);
+
+  lg::info("[Mem] After extraction: {} MB", get_peak_rss() / (1024 * 1024));
+
+  rip_audio(config, in_folder, out_folder, db);
 
   lg::info("Decompiler has finished successfully in {:.2f} seconds.", decomp_timer.getSeconds());
   return 0;
