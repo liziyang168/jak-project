@@ -18,6 +18,45 @@ struct ResolvedTextureData {
   std::vector<u32> rgba;
 };
 
+struct TextureLRUCache {
+  using Entry = std::pair<u32, ResolvedTextureData>;
+  using List = std::list<Entry>;
+  using Iterator = List::iterator;
+
+  size_t capacity;
+  List entries;  // front = most recently used
+  std::unordered_map<u32, Iterator> lookup;
+
+  TextureLRUCache(size_t capacity) : capacity(capacity) {}
+
+  ResolvedTextureData* get(u32 id) {
+    auto it = lookup.find(id);
+    if (it == lookup.end()) {
+      return nullptr;
+    }
+    entries.splice(entries.begin(), entries, it->second);
+    return &it->second->second;
+  }
+
+  void put(u32 id, ResolvedTextureData data) {
+    auto it = lookup.find(id);
+    if (it != lookup.end()) {
+      it->second->second = std::move(data);
+      entries.splice(entries.begin(), entries, it->second);
+      return;
+    }
+
+    entries.emplace_front(id, std::move(data));
+    lookup[id] = entries.begin();
+
+    if (lookup.size() > capacity) {
+      auto last = std::prev(entries.end());
+      lookup.erase(last->first);
+      entries.pop_back();
+    }
+  }
+};
+
 struct TextureDB {
   TextureDB();
   struct TextureData {
@@ -34,13 +73,14 @@ struct TextureDB {
   std::unordered_map<std::string, std::set<u32>> texture_ids_per_level;
   std::optional<fs::path> merge_texture_dir;
   std::optional<fs::path> replace_texture_dir;
+  TextureLRUCache replacement_cache;
 
   // special textures for animation.
   std::map<u32, tfrag3::IndexTexture> index_textures_by_combo_id;
 
   std::unordered_map<std::string, u32> animated_tex_output_to_anim_slot;
 
-  ResolvedTextureData resolve_texture(u32 id) const;
+  ResolvedTextureData resolve_texture(u32 id);
 
   static constexpr int kPlaceholderWhiteTexturePage = INT16_MAX;
   static constexpr int kPlaceholderWhiteTextureId = 0;
@@ -69,7 +109,7 @@ struct TextureDB {
   void merge_textures(const fs::path& base_path);
   void replace_textures(const fs::path& path);
   void merge_texture(u32 id, std::vector<u32>& rgba) const;
-  std::optional<ResolvedTextureData> replace_texture(u32 id) const;
+  std::optional<ResolvedTextureData> replace_texture(u32 id);
 
   std::string generate_texture_dest_adjustment_table() const;
 };

@@ -21,7 +21,6 @@
 #include "decompiler/level_extractor/extract_tfrag.h"
 #include "decompiler/level_extractor/extract_tie.h"
 #include "decompiler/level_extractor/fr3_to_gltf.h"
-#include "goalc/build_actor/jak1/build_actor.h"
 
 namespace decompiler {
 
@@ -61,7 +60,7 @@ bool is_valid_bsp(const decompiler::LinkedObjectFile& file) {
   return true;
 }
 
-tfrag3::Texture make_texture(u32 id, const TextureDB& tex_db, bool pool_load) {
+tfrag3::Texture make_texture(u32 id, TextureDB& tex_db, bool pool_load) {
   const auto& tex = tex_db.textures.at(id);
   auto resolved = tex_db.resolve_texture(id);
 
@@ -78,7 +77,7 @@ tfrag3::Texture make_texture(u32 id, const TextureDB& tex_db, bool pool_load) {
 
 void add_all_textures_from_level(tfrag3::Level& lev,
                                  const std::string& level_name,
-                                 const TextureDB& tex_db) {
+                                 TextureDB& tex_db) {
   auto level_it = tex_db.texture_ids_per_level.find(level_name);
   if (level_it == tex_db.texture_ids_per_level.end()) {
     return;
@@ -269,7 +268,7 @@ level_tools::BspHeader extract_bsp_from_level(const ObjectFileDB& db,
  * but the bsp stuff is just empty. It will contain only textures/art groups.
  */
 void extract_common(const ObjectFileDB& db,
-                    const TextureDB& tex_db,
+                    TextureDB& tex_db,
                     const std::string& dgo_name,
                     const fs::path& output_folder,
                     const Config& config) {
@@ -352,7 +351,7 @@ void extract_common(const ObjectFileDB& db,
 }
 
 void extract_from_level(const ObjectFileDB& db,
-                        const TextureDB& tex_db,
+                        TextureDB& tex_db,
                         const std::string& dgo_name,
                         const Config& config,
                         const fs::path& output_folder,
@@ -407,7 +406,7 @@ void extract_from_level(const ObjectFileDB& db,
 }
 
 void extract_all_levels(const ObjectFileDB& db,
-                        const TextureDB& tex_db,
+                        TextureDB& tex_db,
                         const std::vector<std::string>& dgo_names,
                         const std::string& common_name,
                         const Config& config,
@@ -417,7 +416,7 @@ void extract_all_levels(const ObjectFileDB& db,
                       game_version_names[config.game_version] / "entities";
   file_util::create_dir_if_needed(entities_dir);
 
-  int num_workers = dgo_names.size();
+  int num_workers = 1;
   if (tex_db.replace_texture_dir) {
     num_workers = 1;
   }

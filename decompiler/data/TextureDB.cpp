@@ -9,7 +9,7 @@
 
 namespace decompiler {
 
-TextureDB::TextureDB() {
+TextureDB::TextureDB() : replacement_cache(TextureLRUCache(25)) {
   std::vector<u32> data(16 * 16, 0xffffffff);
   add_texture(kPlaceholderWhiteTexturePage, kPlaceholderWhiteTextureId, data, 16, 16,
               "placeholder-white", "placeholder", {}, 1, 0);
@@ -148,9 +148,14 @@ void TextureDB::merge_texture(u32 id, std::vector<u32>& rgba) const {
   stbi_image_free(merge_data);
 }
 
-std::optional<ResolvedTextureData> TextureDB::replace_texture(u32 id) const {
+std::optional<ResolvedTextureData> TextureDB::replace_texture(u32 id) {
   if (!replace_texture_dir) {
     return std::nullopt;
+  }
+
+  // First check the cache to see if it's there
+  if (auto replacement_texture = replacement_cache.get(id); replacement_texture != nullptr) {
+    return *replacement_texture;
   }
 
   const auto& tex = textures.at(id);
@@ -180,15 +185,16 @@ std::optional<ResolvedTextureData> TextureDB::replace_texture(u32 id) const {
   result.w = static_cast<u16>(w);
   result.h = static_cast<u16>(h);
   result.rgba.resize(w * h);
-
   memcpy(result.rgba.data(), data, w * h * 4);
-
   stbi_image_free(data);
+
+  // Cache it
+  replacement_cache.put(id, result);
 
   return result;
 }
 
-ResolvedTextureData TextureDB::resolve_texture(u32 id) const {
+ResolvedTextureData TextureDB::resolve_texture(u32 id) {
   const auto& tex = textures.at(id);
 
   ResolvedTextureData result{
@@ -197,6 +203,9 @@ ResolvedTextureData TextureDB::resolve_texture(u32 id) const {
       .rgba = tex.rgba_bytes,
   };
 
+  // not bothering to LRU cache this, very niche feature intended for
+  // adding new font symbols and such in a way we can distribute
+  // in other words, these will always be small files.
   merge_texture(id, result.rgba);
 
   if (auto replacement = replace_texture(id)) {

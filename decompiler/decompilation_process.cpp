@@ -311,6 +311,12 @@ void write_text_assets(Config config,
   lg::info("[Mem] After spool handling: {} MB", get_peak_rss() / (1024 * 1024));
 }
 
+// NOTE: Could save some memory usage here by making all the textures lazily loaded
+// however it's quite the invasive refactor and the default textures from the game
+// are not massive, so it's debatable if this is worth the effort
+//
+// Instead it might be better to try to reduce the need to process the DGOs / code so much
+// as that is the vast majority of the default memory usage.
 std::unique_ptr<TextureDB> handle_textures(Config config,
                                            const fs::path& in_folder,
                                            const fs::path& out_folder,
